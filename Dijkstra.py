@@ -4,7 +4,8 @@
 
 nodes = ('A', 'B', 'C', 'D') # vertices
 visited = []
-unvisited = {node: None for node in nodes}
+unvisited = {node: (None,None) for node in nodes}
+#unvisited = {node: None for node in nodes}
 current_distance = 0
 distances = {
     'A': {'B': 3, 'D': 15},
