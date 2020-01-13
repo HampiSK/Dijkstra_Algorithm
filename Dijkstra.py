@@ -17,7 +17,18 @@ def Djikstra(current_vertex,end_vertex,distances,nodes):
     unvisited = {node: (None,None) for node in nodes}
     current_distance = 0
 
+    pygame.draw.rect(win,(225, 225, 225),((150,40),(600, 50)))
+    display_text('FINDING BEST PATH...',450,60,28,BLACK,'freesansbold.ttf')
+
     while True:
+        ## For visualization
+        for event in pygame.event.get():
+        # Close game
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        clock.tick(1)
+
         # looping trought current vertex connections
         for neighbour, distance in distances[current_vertex].items():
             if neighbour in visited: 
@@ -33,6 +44,12 @@ def Djikstra(current_vertex,end_vertex,distances,nodes):
                 unvisited[neighbour] = (new_distance,current_vertex)
 
         if current_vertex == end_vertex:
+
+            ## For visualization
+            pygame.draw.circle(win, BLUE, vertices[end_vertex], size) 
+            x,y = vertices[end_vertex]
+            display_text(end_vertex,x,y,25,WHITE)
+
             return path_list 
             
         # appending and deleting
@@ -52,7 +69,7 @@ def Djikstra(current_vertex,end_vertex,distances,nodes):
         sv_unvisited = min(current_connections.keys(), key=(lambda k: current_connections[k]))
 
         ## For visualization
-        pygame.draw.circle(win, SEAGREEN, vertices[current_vertex], size)
+        pygame.draw.circle(win, BLUE, vertices[current_vertex], size)
         x,y = vertices[current_vertex]
         display_text(current_vertex,x,y,25,WHITE)
 
@@ -61,9 +78,6 @@ def Djikstra(current_vertex,end_vertex,distances,nodes):
 
         # next smallest vertex
         current_vertex = sv_unvisited
-
-
-    
 
 def shortest_path(reversed_path_list,last_vertex):
     # This function returns taken path
@@ -77,67 +91,54 @@ def shortest_path(reversed_path_list,last_vertex):
                 last_vertex = vertex
     return taken_path[::-1] # reverse list
 
-def draw_lines():
-    # ROW 1:
-        # A Vertex connections 
-        pygame.draw.line(win, BLACK, vertex_A, vertex_B, thickness)
-        pygame.draw.line(win, BLACK, vertex_A, vertex_E, thickness)
+def intro():
+    clock=pygame.time.Clock()
 
-        # B Vertex connections
-        pygame.draw.line(win, BLACK, vertex_B, vertex_A, thickness)
-        pygame.draw.line(win, BLACK, vertex_B, vertex_C, thickness)
-        pygame.draw.line(win, BLACK, vertex_B, vertex_F, thickness)
+    counter = 0
+    while True:       
+        for event in pygame.event.get():
+            # Close game
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            # Close intro
+            click = pygame.mouse.get_pressed()
+            if event.type == pygame.KEYDOWN or click[0] == 1:
+                return True           
 
-        # C Vertex connections
-        pygame.draw.line(win, BLACK, vertex_C, vertex_B, thickness)
-        pygame.draw.line(win, BLACK, vertex_C, vertex_D, thickness)
-        pygame.draw.line(win, BLACK, vertex_C, vertex_G, thickness)
-    
-        # D Vertex connections 
-        pygame.draw.line(win, BLACK, vertex_D, vertex_C, thickness)
-        pygame.draw.line(win, BLACK, vertex_D, vertex_H, thickness)
+        if counter == 0:
+            win.fill((255, 255, 255))
 
-        ## ROW 2:
-        # E Vertex connections 
-        pygame.draw.line(win, BLACK, vertex_E, vertex_A, thickness)
-        pygame.draw.line(win, BLACK, vertex_E, vertex_F, thickness)
-        pygame.draw.line(win, BLACK, vertex_E, vertex_I, thickness)
+            # Header
+            pygame.draw.rect(win,(96,96,96),((149,39),(602, 52)))
+            pygame.draw.rect(win,(160, 160, 160),((150,40),(600, 50)))
+            display_text("Dijkstra's algorithm",450,67,30,BLACK,'freesansbold.ttf')
 
-        # F Vertex connections
-        pygame.draw.line(win, BLACK, vertex_F, vertex_B, thickness)
-        pygame.draw.line(win, BLACK, vertex_F, vertex_E, thickness)
-        pygame.draw.line(win, BLACK, vertex_F, vertex_G, thickness)
-        pygame.draw.line(win, BLACK, vertex_F, vertex_J, thickness)
+            # Body
+            pygame.draw.rect(win,(96,96,96),((149,149),(602, 392)))
+            pygame.draw.rect(win,(160, 160, 160),((150,150),(600, 320)))
+            body1 = "Dijkstra's Shortest Path First algorithm, is an algorithm for"
+            display_text(body1,450,200,20,BLACK,'freesansbold.ttf')
+            body2 = " finding the shortest paths between nodes in a graph, which" 
+            display_text(body2,450,230,20,BLACK,'freesansbold.ttf')
+            body3 = "may represent, for example, road networks."
+            display_text(body3,450,260,20,BLACK,'freesansbold.ttf')
+            body4 = "It was conceived by computer scientist Edsger W. Dijkstra."
+            display_text(body4,450,330,20,BLACK,'freesansbold.ttf')
+            body5 ="The algorithm exists in many variants. Dijkstra's original    "
+            display_text(body5,450,360,20,BLACK,'freesansbold.ttf')
+            body6 = "algorithm found the shortest path between two given nodes,"
+            display_text(body6,450,390,20,BLACK,'freesansbold.ttf')
+            body7 = "producing a shortest-path tree."
+            display_text(body7,450,420,20,BLACK,'freesansbold.ttf')
 
-        # G Vertex connections
-        pygame.draw.line(win, BLACK, vertex_G, vertex_C, thickness)
-        pygame.draw.line(win, BLACK, vertex_G, vertex_F, thickness)
-        pygame.draw.line(win, BLACK, vertex_G, vertex_H, thickness)
-        pygame.draw.line(win, BLACK, vertex_G, vertex_K, thickness)
-        
-        # H Vertex connections 
-        pygame.draw.line(win, BLACK, vertex_H, vertex_D, thickness)
-        pygame.draw.line(win, BLACK, vertex_H, vertex_G, thickness)
-        pygame.draw.line(win, BLACK, vertex_H, vertex_L, thickness)
+            # End
+            display_text('Press any button to continue',450,505,19,WHITE,'freesansbold.ttf')
 
-        ## ROW 3:
-        # I Vertex connections
-        pygame.draw.line(win, BLACK, vertex_I, vertex_E, thickness)
-        pygame.draw.line(win, BLACK, vertex_I, vertex_J, thickness)
+            counter = 1
 
-        # J Vertex connections
-        pygame.draw.line(win, BLACK, vertex_J, vertex_F, thickness)
-        pygame.draw.line(win, BLACK, vertex_J, vertex_I, thickness)
-        pygame.draw.line(win, BLACK, vertex_J, vertex_K, thickness)
-
-        # K Vertex connections
-        pygame.draw.line(win, BLACK, vertex_K, vertex_G, thickness)
-        pygame.draw.line(win, BLACK, vertex_K, vertex_J, thickness)
-        pygame.draw.line(win, BLACK, vertex_K, vertex_L, thickness)
-        
-        # L Vertex connections 
-        pygame.draw.line(win, BLACK, vertex_L, vertex_H, thickness)
-        pygame.draw.line(win, BLACK, vertex_L, vertex_K, thickness)
+        pygame.display.update()
+        clock.tick(15)
 
 ###################################################################################################################
 
@@ -145,7 +146,7 @@ pygame.init()
 
 ### SETUP ###
 # Window setup
-win_name = 'Shortest Distance'
+win_name = "Dijkstra algorithm"
 display_width = 900
 display_height = 700
 # Collors
@@ -154,6 +155,7 @@ BLACK = (0,0,0)
 PINK = (141,74,74)
 DARKRED = (98,50,50)
 SEAGREEN = (32,178,170)
+BLUE = (51,153,255)
 
 size = 20
 thickness = 3
@@ -195,10 +197,19 @@ vertices = {
 win = pygame.display.set_mode((display_width, display_height))
 # Window bar init
 pygame.display.set_caption(win_name)
-icon = pygame.image.load('gameicon.png')
+icon = pygame.image.load('tab.png')
 pygame.display.set_icon(icon)
 
 clock=pygame.time.Clock()
+
+# Introduction
+
+pygame.mixer.music.load("The_Witcher_3_Wild_Hunt_OST_Silver_For_Monsters.mp3")
+pygame.mixer.music.play(-1,80)
+
+intro()
+
+pygame.mixer.music.stop()
 
 # MAIN LOOP
 while True:
@@ -211,7 +222,7 @@ while True:
     # mouse information
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
-    #print(mouse)
+    
     if counter == 0:
         for event in pygame.event.get():
         # Close game
@@ -223,8 +234,64 @@ while True:
 
         connections = {}
 
-        draw_lines()
+        # Draw lines
 
+        # ROW 1:
+        # A Vertex connections 
+        pygame.draw.line(win, BLACK, vertex_A, vertex_B, thickness)
+        pygame.draw.line(win, BLACK, vertex_A, vertex_E, thickness)
+
+        # B Vertex connections
+        pygame.draw.line(win, BLACK, vertex_B, vertex_A, thickness)
+        pygame.draw.line(win, BLACK, vertex_B, vertex_C, thickness)
+        pygame.draw.line(win, BLACK, vertex_B, vertex_F, thickness)
+
+        # C Vertex connections
+        pygame.draw.line(win, BLACK, vertex_C, vertex_B, thickness)
+        pygame.draw.line(win, BLACK, vertex_C, vertex_D, thickness)
+        pygame.draw.line(win, BLACK, vertex_C, vertex_G, thickness)
+    
+        # D Vertex connections 
+        pygame.draw.line(win, BLACK, vertex_D, vertex_C, thickness)
+        pygame.draw.line(win, BLACK, vertex_D, vertex_H, thickness)
+
+        ## ROW 2:
+        # E Vertex connections 
+        pygame.draw.line(win, BLACK, vertex_E, vertex_F, thickness)
+
+        # F Vertex connections
+        pygame.draw.line(win, BLACK, vertex_F, vertex_G, thickness)
+
+        # G Vertex connections
+        pygame.draw.line(win, BLACK, vertex_G, vertex_H, thickness)
+
+        ## ROW 3:
+        # I Vertex connections
+        pygame.draw.line(win, BLACK, vertex_I, vertex_E, thickness)
+        pygame.draw.line(win, BLACK, vertex_I, vertex_J, thickness)
+
+        # J Vertex connections
+        pygame.draw.line(win, BLACK, vertex_J, vertex_F, thickness)
+        pygame.draw.line(win, BLACK, vertex_J, vertex_I, thickness)
+        pygame.draw.line(win, BLACK, vertex_J, vertex_K, thickness)
+
+        # K Vertex connections
+        pygame.draw.line(win, BLACK, vertex_K, vertex_G, thickness)
+        pygame.draw.line(win, BLACK, vertex_K, vertex_J, thickness)
+        pygame.draw.line(win, BLACK, vertex_K, vertex_L, thickness)
+        
+        # L Vertex connections 
+        pygame.draw.line(win, BLACK, vertex_L, vertex_H, thickness)
+        pygame.draw.line(win, BLACK, vertex_L, vertex_K, thickness)
+ 
+        counter = 1
+
+    if counter == 1:
+        # Hide previous text
+        pygame.draw.rect(win,(225, 225, 225),((150,40),(600, 50)))
+        pygame.draw.rect(win,(225, 225, 225),((0,560),(900, 690)))
+
+        # Draw rectangles with random number as well as update connections dictionary
         pygame.draw.rect(win,pygame.Color('black'),pygame.Rect((125, 230),(20, 26)))
         ae = random.randint(1,9)
         connections.update({'ae':ae})
@@ -311,11 +378,12 @@ while True:
         'J': {'F': connections['jf'],'I': connections['ij'],'K': connections['jk']},                     
         'K': {'G': connections['gk'],'J': connections['jk'],'L': connections['kl']},                     
         'L': {'H': connections['hl'],'K': connections['kl']}                                          
-        } 
-        counter = 1
-    
-    
-    if counter == 1 or counter == 2:
+        }
+
+        counter = 2
+
+    # Draw nodes
+    if counter == 2 or counter == 3:
         if 'A' in path:
             pygame.draw.circle(win, SEAGREEN, vertex_A, size)
         elif 168 > mouse[0] > 130 and 158 > mouse[1] > 120:
@@ -427,24 +495,29 @@ while True:
             pygame.draw.circle(win, DARKRED, vertex_L, size)
         display_text('L',750,540,25,WHITE)
 
+    # nodes selection
     if len(path) <= 2:
         if len(path) == 1:
             pygame.draw.rect(win,(225, 225, 225),((150,40),(600, 50)))
             display_text('CHOOSE ENDING POSITION',450,60,28,BLACK,'freesansbold.ttf')
         elif len(path) == 2:
             counter += 1
-            if counter >= 3:
-                counter = 3
+            if counter >= 4:
+                counter = 4
                 find = True
         else:
             display_text('CHOOSE STARTING POSITION',450,60,28,BLACK,'freesansbold.ttf')
 
+    # When two nodes were selected
     if find == True:
         start_vertex = path[0]
         end_vertex = path[1]
 
         path_list = Djikstra(start_vertex,end_vertex,distances,nodes)
         path_taken = shortest_path(reversed(path_list),end_vertex)
+
+        pygame.draw.rect(win,(225, 225, 225),((150,40),(600, 50)))
+        display_text('SHORTEST PATH',450,60,28,BLACK,'freesansbold.ttf')
 
         for node in nodes:
             if node in path_taken:
@@ -456,7 +529,7 @@ while True:
         
         display_text(str(' > '.join(path_taken)),300,620,28,BLACK,'freesansbold.ttf')
         
-        while counter != 4:
+        while counter != 5:
             for event in pygame.event.get():
                 # Close game
                 if event.type == pygame.QUIT:
@@ -471,16 +544,15 @@ while True:
                 pygame.draw.circle(win, PINK, (650,620), 40)
                 display_text('AGAIN',650,620,20,WHITE,'freesansbold.ttf')
                 if click[0] == 1:
-                    counter = 4
+                    counter = 5
             else:
                 pygame.draw.circle(win, DARKRED, (650,620), 40)
-                display_text('AGAIN',650,620,20,WHITE,'freesansbold.ttf')      
-        counter = 0
+                display_text('AGAIN',650,620,20,WHITE,'freesansbold.ttf')
+
+        # reset 
+        counter = 1
         path.clear()
+        find = False
     
-    find = False
-
     pygame.display.update()
-
-    
     clock.tick(15)
