@@ -204,7 +204,7 @@ clock=pygame.time.Clock()
 
 # Introduction
 
-pygame.mixer.music.load("The_Witcher_3_Wild_Hunt_OST_Silver_For_Monsters.mp3")
+pygame.mixer.music.load("music.mp3")
 pygame.mixer.music.play(-1,80)
 
 intro()
